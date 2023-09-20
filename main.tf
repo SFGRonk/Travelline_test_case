@@ -2,11 +2,7 @@ locals {
   cloud_id    = "b1g89n9815104s0f2du0"
   folder_id   = "b1g1b353baor0tnd9c32"
   k8s_version = "1.24"
-  sa_name     = "tl-sa"
-}
-
-variable "sa-name" {
-    default  = "tl-sa"
+  sa_name     = "tl-test-case-sa"
 }
 
 terraform {
@@ -31,8 +27,8 @@ resource "yandex_kubernetes_cluster" "k8s-zonal" {
     }
     security_group_ids = [yandex_vpc_security_group.k8s-public-services.id]
   }
-  service_account_id      = yandex_iam_service_account.tl-sa.id
-  node_service_account_id = yandex_iam_service_account.tl-sa.id
+  service_account_id      = yandex_iam_service_account.myaccount.id
+  node_service_account_id = yandex_iam_service_account.myaccount.id
   depends_on = [
     yandex_resourcemanager_folder_iam_member.k8s-clusters-agent,
     yandex_resourcemanager_folder_iam_member.vpc-public-admin,
@@ -53,7 +49,7 @@ resource "yandex_vpc_subnet" "mysubnet" {
   network_id     = yandex_vpc_network.mynet.id
 }
 
-resource "yandex_iam_service_account" "tl-sa" {
+resource "yandex_iam_service_account" "myaccount" {
   name        = local.sa_name
   description = "K8S zonal service account"
 }
@@ -62,21 +58,21 @@ resource "yandex_resourcemanager_folder_iam_member" "k8s-clusters-agent" {
   # Сервисному аккаунту назначается роль "k8s.clusters.agent".
   folder_id = local.folder_id
   role      = "k8s.clusters.agent"
-  member    = "serviceAccount:${yandex_iam_service_account.tl-sa.id}"
+  member    = "serviceAccount:${yandex_iam_service_account.myaccount.id}"
 }
 
 resource "yandex_resourcemanager_folder_iam_member" "vpc-public-admin" {
   # Сервисному аккаунту назначается роль "vpc.publicAdmin".
   folder_id = local.folder_id
   role      = "vpc.publicAdmin"
-  member    = "serviceAccount:${yandex_iam_service_account.tl-sa.id}"
+  member    = "serviceAccount:${yandex_iam_service_account.myaccount.id}"
 }
 
 resource "yandex_resourcemanager_folder_iam_member" "images-puller" {
   # Сервисному аккаунту назначается роль "container-registry.images.puller".
   folder_id = local.folder_id
   role      = "container-registry.images.puller"
-  member    = "serviceAccount:${yandex_iam_service_account.tl-sa.id}"
+  member    = "serviceAccount:${yandex_iam_service_account.myaccount.id}"
 }
 
 resource "yandex_kms_symmetric_key" "kms-key" {
@@ -89,7 +85,7 @@ rotation_period   = "8760h" # 1 год.
 resource "yandex_resourcemanager_folder_iam_member" "viewer" {
   folder_id = local.folder_id
   role      = "viewer"
-  member    = "serviceAccount:${yandex_iam_service_account.tl-sa.id}"
+  member    = "serviceAccount:${yandex_iam_service_account.myaccount.id}"
 }
 
 resource "yandex_vpc_security_group" "k8s-public-services" {
