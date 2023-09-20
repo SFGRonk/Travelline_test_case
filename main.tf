@@ -2,7 +2,7 @@ locals {
   cloud_id    = "b1g89n9815104s0f2du0"
   folder_id   = "b1g1b353baor0tnd9c32"
   k8s_version = "1.24"
-  sa_name     = "tl-test-case-account"
+  sa_name     = "tl-sa"
 }
 
 terraform {
