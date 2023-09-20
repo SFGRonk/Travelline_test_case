@@ -53,7 +53,7 @@ resource "yandex_vpc_subnet" "mysubnet" {
   network_id     = yandex_vpc_network.mynet.id
 }
 
-resource "yandex_iam_service_account" ${local.sa_name} {
+resource "yandex_iam_service_account" "tl-sa" {
   name        = local.sa_name
   description = "K8S zonal service account"
 }
