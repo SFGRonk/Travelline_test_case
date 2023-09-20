@@ -5,6 +5,10 @@ locals {
   sa_name     = "tl-sa"
 }
 
+variable "sa_name" {
+    default  = "tl-sa"
+}
+
 terraform {
   required_providers {
     yandex = {
