@@ -53,10 +53,10 @@ resource "yandex_vpc_subnet" "mysubnet" {
   network_id     = yandex_vpc_network.mynet.id
 }
 
-# resource "yandex_iam_service_account" "tl-sa" {
-#   name        = local.sa_name
-#   description = "K8S zonal service account"
-# }
+resource "yandex_iam_service_account" "tl-sa" {
+  name        = local.sa_name
+  description = "K8S zonal service account"
+}
 
 resource "yandex_resourcemanager_folder_iam_member" "k8s-clusters-agent" {
   # Сервисному аккаунту назначается роль "k8s.clusters.agent".
