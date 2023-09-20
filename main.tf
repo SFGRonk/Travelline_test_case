@@ -5,7 +5,7 @@ locals {
   sa_name     = "tl-sa"
 }
 
-variable "sa_name" {
+variable "sa-name" {
     default  = "tl-sa"
 }
 
@@ -53,7 +53,7 @@ resource "yandex_vpc_subnet" "mysubnet" {
   network_id     = yandex_vpc_network.mynet.id
 }
 
-resource "yandex_iam_service_account" "${var.sa_name}" {
+resource "yandex_iam_service_account" "${var.sa-name}" {
   name        = local.sa_name
   description = "K8S zonal service account"
 }
