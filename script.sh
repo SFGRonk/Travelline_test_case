@@ -1,6 +1,6 @@
 #!/bin/bash
 
-response_code=$(curl -s -o /dev/null -w '%{response_code}' ya.ru)
+response_code=$(curl -sL -o /dev/null -w '%{response_code}' ya.ru)
 echo "RESPONSE CODE: $response_code"
 
 if [ "$response_code" -ne "200" ]; then
